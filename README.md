@@ -17,39 +17,6 @@ Edit Modal: Update title, description, and status
 
 Serial Number + Unique ID columns in task table
 
-Dockerized: Run with one command via docker-compose
-
-🔹 Project Structure
-
-task-manager-app/
-├── backend/ # Spring Boot REST API
-│ ├── src/ # Java source code
-│ ├── pom.xml # Maven config
-│ └── Dockerfile
-│
-├── frontend/ # Bootstrap + JS frontend
-│ ├── index.html
-│ ├── app.js
-│ ├── style.css
-│ ├── config.js # Injected API URL
-│ ├── entrypoint.sh # Nginx startup script
-│ └── Dockerfile
-│
-├── docker-compose.yml # Orchestrates frontend + backend
-├── .gitignore # Ignore build artifacts, IDE files
-└── README.md # (this file)
-
-Run Locally with Docker Compose
-
-1. Build images
-   docker-compose build
-2. Start containers
-   docker-compose up
-   Backend API → http://localhost:8080/api/tasks
-   Frontend UI → http://localhost:8081
-3. Stop containers
-   Press CTRL+C, then:
-   docker-compose down
 
 🔹 API Endpoints (Backend)
 | Method | Endpoint | Description |
@@ -60,38 +27,71 @@ Run Locally with Docker Compose
 | PUT | `/api/tasks/{id}` | Update task by ID |
 | DELETE | `/api/tasks/{id}` | Delete task by ID |
 
-Example (create a task):
+Build & run
+
+From the extracted Task_Manager/ folder (the one that contains the Dockerfile):
+# Build image
+docker build -t task-manager .
+
+# Run container
+docker run --rm -p 8080:8080 task-manager
+
+Open:
+
+App UI: http://localhost:8080/index.html
+
+Health check: http://localhost:8080/api/health
+
+Notes (in case you tweak things)
+
+Changing port: edit backend/src/main/resources/application.properties (server.port=8080) and re-build the image.
+
+JAVA_OPTS: you can pass JVM flags as needed:
+docker run --rm -p 8080:8080 -e JAVA_OPTS="-Xms256m -Xmx512m" task-manager
+CORS: the controllers already allow *, so the in-container UI and API work together without extra config.
+
+
+
+CRUD:
+
+1. Create a Task (POST)
+
 curl -X POST http://localhost:8080/api/tasks \
- -H "Content-Type: application/json" \
- -d '{"title":"Learn Docker","description":"Step 5","status":"PENDING"}'
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Finish Docker setup",
+    "description": "Complete Dockerfile testing",
+    "status": "DONE"
+  }'
 
-🔹 Cloud Deployment
+2. Read All Tasks (GET)
 
-Push this repo to GitHub.
+curl -X GET http://localhost:8080/api/tasks
 
-Choose a cloud provider:
+3. Read a Task by ID (GET)
 
-Render → Easiest free hosting (build from docker-compose.yml)
+curl -X GET http://localhost:8080/api/tasks/1
 
-Heroku → Container deploy with heroku container:push
+4. Update a Task (PUT)
 
-AWS ECS/Fargate → For production-grade deployment
+curl -X PUT http://localhost:8080/api/tasks/1 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Finish Docker setup (updated)",
+    "description": "Ensure Docker container works",
+    "completed": true
+  }'
 
-Make sure to set API_URL in frontend container’s environment variable:
-environment:
+5. Delete a Task (DELETE)
 
-- API_URL=https://myapi.example.com/api/tasks
+curl -X DELETE http://localhost:8080/api/tasks/1
+
+
+6. Health Check (GET)
+
+curl -X GET http://localhost:8080/api/health
 
 For Cleaning:
 rm -rf backend/target
 rm -rf .vscode
 
-🔹 Development Notes
-
-Backend runs on Java 17 (check your JDK).
-
-backend/target/ is ignored (generated on build).
-
-CORS is currently @CrossOrigin(origins = "\*") → in production, restrict it to your frontend domain.
-
-Frontend API base URL is injected dynamically via config.js at container startup.
