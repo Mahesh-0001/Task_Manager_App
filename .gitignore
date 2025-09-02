@@ -1,0 +1,42 @@
+# ----------------------
+# Java / Maven
+# ----------------------
+/backend/target/
+*.class
+*.jar
+*.war
+*.ear
+
+# Maven release backup
+release.properties
+dependency-reduced-pom.xml
+
+# Logs
+*.log
+
+# ----------------------
+# IDE / Editors
+# ----------------------
+# VS Code
+.vscode/
+
+# IntelliJ / IDEA
+.idea/
+*.iml
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# ----------------------
+# OS / Misc
+# ----------------------
+.DS_Store
+Thumbs.db
+
+# ----------------------
+# Docker
+# ----------------------
+# Ignore local build cache if any
+**/.env

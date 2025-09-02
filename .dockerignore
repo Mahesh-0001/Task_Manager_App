@@ -1,0 +1,18 @@
+# Maven build outputs
+**/target
+**/.mvn
+.mvn/
+# IDE/editor
+**/.idea
+**/.vscode
+*.iml
+# Git
+.git
+.gitignore
+# OS junk
+.DS_Store
+Thumbs.db
+# Node/Frontend (not used here, but safe)
+**/node_modules
+# Docker cache
+**/.dockerignore
