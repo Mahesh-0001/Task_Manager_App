@@ -30,8 +30,9 @@
           <div class="mb-3">
             <label class="form-label">Status</label>
             <select id="status" class="form-select">
-              <option value="PENDING">PENDING</option>
-              <option value="DONE">DONE</option>
+              <option value="YET_TO_START">Yet to Start</option>
+              <option value="IN_PROGRESS">In Progress</option>
+              <option value="DONE">Done</option>
             </select>
           </div>
           <button type="submit" class="btn btn-primary">Add Task</button>
@@ -49,6 +50,8 @@
               <th>Title</th>
               <th>Description</th>
               <th>Status</th>
+              <th>Created At</th>
+              <th>Completed At</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -88,8 +91,9 @@
               <div class="mb-3">
                 <label class="form-label">Status</label>
                 <select id="editStatus" class="form-select">
-                  <option value="PENDING">PENDING</option>
-                  <option value="DONE">DONE</option>
+                  <option value="YET_TO_START">Yet to Start</option>
+                  <option value="IN_PROGRESS">In Progress</option>
+                  <option value="DONE">Done</option>
                 </select>
               </div>
               <button type="submit" class="btn btn-primary">
